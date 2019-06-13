@@ -21,13 +21,18 @@ const liMaker = (text) => {
   btn_del.innerHTML = "delete";
   btn_update.innerHTML = "update";
   btn_del.onclick = function(){
+    itemsArray.splice(itemsArray.indexOf(td.childNodes[0].data),1);
+    localStorage.setItem('items', JSON.stringify(itemsArray));
     tbl.removeChild(tr);
   };
   btn_update.onclick = function(){
-    console.log(localStorage);
-    let i = localStorage.getItem('items');
-    console.log(i);
-    td.childNodes[0].data = "fasdfsd";
+    if (input.value === "" || input.value[0] === " ") {
+      input.value = "";
+      return;
+    }
+    itemsArray[itemsArray.indexOf(td.childNodes[0].data)] = input.value;
+    td.childNodes[0].data = input.value;
+    localStorage.setItem('items', JSON.stringify(itemsArray));
   }
   td.appendChild(btn_del);
   td.appendChild(btn_update);
