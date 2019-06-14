@@ -8,9 +8,6 @@ let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem
 localStorage.setItem('items', JSON.stringify(itemsArray));
 const allItems = JSON.parse(localStorage.getItem('items'));
 
-console.log(itemsArray);
-console.log(allItems);
-
 const liMaker = (text) => {
   const tr = document.createElement('tr');
   const td = document.createElement('td');
@@ -21,18 +18,26 @@ const liMaker = (text) => {
   btn_del.innerHTML = "delete";
   btn_update.innerHTML = "update";
   btn_del.onclick = function(){
-    itemsArray.splice(itemsArray.indexOf(td.childNodes[0].data),1);
-    localStorage.setItem('items', JSON.stringify(itemsArray));
-    tbl.removeChild(tr);
+    for (let i = 0; i < tbl.rows.length; i++) {
+      if (tbl.rows[i] === tr) {
+        itemsArray.splice(i,1);
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+        tbl.removeChild(tr);
+      }
+    }
   };
   btn_update.onclick = function(){
     if (input.value === "" || input.value[0] === " ") {
       input.value = "";
       return;
     }
-    itemsArray[itemsArray.indexOf(td.childNodes[0].data)] = input.value;
-    td.childNodes[0].data = input.value;
-    localStorage.setItem('items', JSON.stringify(itemsArray));
+    for (let i = 0; i < tbl.rows.length; i++) {
+      if (tbl.rows[i] === tr) {
+        itemsArray[i] = input.value;
+        td.childNodes[0].data = input.value;
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+      }
+    }
   }
   td.appendChild(btn_del);
   td.appendChild(btn_update);
