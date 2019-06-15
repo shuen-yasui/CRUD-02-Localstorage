@@ -6,15 +6,17 @@ const tbl = document.querySelector('table');
 
 let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
 localStorage.setItem('items', JSON.stringify(itemsArray));
-const allItems = JSON.parse(localStorage.getItem('items'));
 
-const liMaker = (text) => {
+const entryMaker = (text) => {
   const tr = document.createElement('tr');
   const td = document.createElement('td');
+  td.className = "cell";
   const btn_del = document.createElement('button');
+  btn_del.className = "btn btn-outline-primary btnCell";
   const btn_update = document.createElement('button');
+  btn_update.className = "btn btn-outline-primary btnCell";
   tr.appendChild(td);
-  td.appendChild(document.createTextNode(text));
+
   btn_del.innerHTML = "delete";
   btn_update.innerHTML = "update";
   btn_del.onclick = function(){
@@ -34,18 +36,20 @@ const liMaker = (text) => {
     for (let i = 0; i < tbl.rows.length; i++) {
       if (tbl.rows[i] === tr) {
         itemsArray[i] = input.value;
-        td.childNodes[0].data = input.value;
+        td.childNodes[2].data = input.value;
         localStorage.setItem('items', JSON.stringify(itemsArray));
+        input.value = "";
       }
     }
   }
   td.appendChild(btn_del);
   td.appendChild(btn_update);
+  td.appendChild(document.createTextNode(text));
   tbl.appendChild(tr);
 }
 
-allItems.forEach(item => {
-  liMaker(item);
+itemsArray.forEach(item => {
+  entryMaker(item);
 });
 
 function submitNewEntry(){
@@ -55,7 +59,7 @@ function submitNewEntry(){
   }
   itemsArray.push(input.value);
   localStorage.setItem('items', JSON.stringify(itemsArray));
-  liMaker(input.value);
+  entryMaker(input.value);
   input.value = "";
 }
 
